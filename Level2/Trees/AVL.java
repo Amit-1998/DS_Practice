@@ -4,9 +4,13 @@ public class AVL{
          int data;
          Node left;
          Node right;
+         int ht; // height
+         int bf; // balancing factor
          Node(){}
          Node(int data){
              this.data = data;
+             this.ht = 0;
+             this.bf = 0;
          }
      }
 
@@ -36,7 +40,25 @@ public class AVL{
         else if(data > root.data){
             root.right = add(root.right,data);
         }
+        update_Height_bf(root);
         return root;
+    }
+
+    public static void update_Height_bf(Node root){
+         if(node == null){
+             return; 
+         }
+        //  update_Height_bf(root.left);
+        //  update_Height_bf(root.right);
+
+         int lht = (root.left==null)?-1:root.left.ht;
+         int rht = (root.right==null)?-1:root.right.ht;
+
+         int meriHt = Math.max(lht,rht)+1;
+         int merabf = lht-rht;
+
+         node.ht = meriHt;
+         node.bf = merabf;
     }
 
     public static void main(String[] args){
