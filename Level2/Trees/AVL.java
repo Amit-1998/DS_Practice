@@ -46,6 +46,50 @@ public class AVL{
         // return root;
     }
 
+    public static Node delete(Node node, int data){
+         if(node == null){
+             return null;
+         }
+         if(node.data < data){
+            node.left = delete(node.left, data);
+         }
+         else if(node.data > data){
+            node.right = delete(node.right, data);
+         }
+         else{
+             //having both childs
+             if(node.left!=null && node.right!=null){
+                 int lmax = max(node.left);
+                 node.data = lmax;
+                 node.left = delete(node.left, lmax);
+             }
+             //having single child
+             else if(node.left!=null){
+                 //only left child // right child is null
+                 return node.left;
+             }
+             else if(node.right!=null){
+                 // left child is null
+                 return node.right;
+             }
+             // leaf child
+             else{
+                 return null;
+             }
+             return node;
+         }
+
+        update_Height_bf(node); // update the bfs of node to whom right or left it is added and update in postarea upwards
+        return checkAndSolve(node); // type of Problem
+    }
+
+    public static int max(Node node){
+        if(node.right!=null){
+            max(node.right);
+        }
+        return node.data;
+    }
+
     public static Node solveRR(Node node){
         // we have to do left rotation at node's right child
         Node rc = node.right; // right child of node
@@ -66,14 +110,6 @@ public class AVL{
 
         return lc;
     }
-
-    // public static Node leftRotation(Node node){
-
-    // }
-
-    // public static Node rightRotation(Node node){
-
-    // }
 
     public static Node checkAndSolve(Node node){
         if(node.bf>1 || node.bf<-1){
@@ -136,10 +172,11 @@ public class AVL{
         // root = add(root, 90);
         // root = add(root, 50);
         // so rathan than calling every time and change root do store add nodes in an array
-        int[] arr = {10,30,40,35,90,50,8};
+        int[] arr = {10,30,40,35,90,5,50,8};
         for(int i=0; i<arr.length; i++){
             root = add(root, arr[i]);
         }
+        root = delete(root, 35);
         display(root);
     }
 }
